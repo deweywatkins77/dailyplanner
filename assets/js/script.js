@@ -2,6 +2,25 @@
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
 $(function () {
+  const mainContainer = $('.container-lg')
+  const workHours = [9,10,11,12,1,2,3,4,5]
+  //build planner time entries
+  $.each(workHours, function(index,value){
+      const hourContainer = $('<div></div>')
+      hourContainer.attr({id:"hour-"+value, class:"row time-block past"})
+      const hourTime = `<div class="col-2 col-md-1 hour text-center py-3 id=timeEntry-`+value+`">`+value+`AM</div>`
+      const textArea = `<textarea class="col-8 col-md-10 description" rows="3" id="textarea-`+value+`"> </textarea>`
+      const saveButton = `<button class="btn saveBtn col-2 col-md-1" aria-label="save">
+                            <i class="fas fa-save" aria-hidden="true" id="button-`+value+`"></i>
+                          </button>`
+      hourContainer.append(hourTime)
+      hourContainer.append(textArea)
+      hourContainer.append(saveButton)
+      mainContainer.append(hourContainer)
+    })  
+
+
+
     // TODO: Add a listener for click events on the save button. This code should
     // use the id in the containing time-block as a key to save the user input in
     // local storage. HINT: What does `this` reference in the click listener
