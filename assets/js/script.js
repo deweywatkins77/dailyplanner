@@ -2,23 +2,46 @@
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
 $(function () {
+  const workHours = [9,10,11,12,13,14,15,16,17]
+  const currentHour = dayjs().format('H')
   const mainContainer = $('.container-lg')
-  const workHours = [9,10,11,12,1,2,3,4,5]
+  var eventEl, hourEl, textEl, saveEl
+  var bgcolor
+  var plannerCache = localStorage.getItem("plannerCache")
+  if (!plannerCache){plannerCache = {}}
+
   //build planner time entries
   $.each(workHours, function(index,value){
-      const hourContainer = $('<div></div>')
-      hourContainer.attr({id:"hour-"+value, class:"row time-block past"})
-      const hourTime = `<div class="col-2 col-md-1 hour text-center py-3 id=timeEntry-`+value+`">`+value+`AM</div>`
-      const textArea = `<textarea class="col-8 col-md-10 description" rows="3" id="textarea-`+value+`"> </textarea>`
-      const saveButton = `<button class="btn saveBtn col-2 col-md-1" aria-label="save">
-                            <i class="fas fa-save" aria-hidden="true" id="button-`+value+`"></i>
-                          </button>`
-      hourContainer.append(hourTime)
-      hourContainer.append(textArea)
-      hourContainer.append(saveButton)
-      mainContainer.append(hourContainer)
-    })  
+    hourValue = dayjs().hour(value).format('hA')
+    if ( value < currentHour){
+      bgcolor = "past"
+    }else if ( value > currentHour){
+      bgcolor = "future"
+    }else{
+      bgcolor = "present"
+    }
+    eventEl = $('<div></div>')      
+    eventEl.attr({id:"hour-"+value, class:"row time-block "+bgcolor})
+    hourEl = `<div class="col-2 col-md-1 hour text-center py-3 id=timeEntry-`+value+`">`+hourValue+`</div>`
+    textEl = `<textarea class="col-8 col-md-10 description" rows="3" id="textarea-`+value+`"> </textarea>`
+    saveEl = `<button class="btn saveBtn col-2 col-md-1" dataset=aria-label="save">
+                <i class="fas fa-save" aria-hidden="true" id="button-`+value+`"></i>
+              </button>`
+    eventEl.append(hourEl)
+    eventEl.append(textEl)
+    eventEl.append(saveEl)
+    mainContainer.append(eventEl)
+  })  
+  $('.fa-save').click(function(){
+    //get number part of id=button-# 
+    let eventid = $(this).attr("id")
+    eventid = eventid.slice(-(eventid.length-7))
+    $('#textarea-'+eventid).val() ? plannerCache[eventid] = $('#textarea-'+eventid).val() : delete plannerCache[eventid]
+    //remove entry if left blank
+    
+    console.log(plannerCache)
 
+  })
 
 
     // TODO: Add a listener for click events on the save button. This code should
