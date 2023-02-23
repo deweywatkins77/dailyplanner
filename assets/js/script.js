@@ -45,7 +45,7 @@ $(function () {
     let eventid = $(this).attr("id")
     eventid = eventid.slice(-(eventid.length-7))
     //remove entry if left blank other wise add it to the plannerCache
-    $('#textarea-'+eventid).val() ? plannerCache[eventid] = $('#textarea-'+eventid).val() : delete plannerCache[eventid]
+    $('#textarea-'+eventid).val() ? plannerCache[eventid] = $('#textarea-'+eventid).val().trim() : delete plannerCache[eventid]
     localStorage.setItem("plannerCache", JSON.stringify(plannerCache))
   })
 });
