@@ -19,6 +19,7 @@ $(function () {
     }else{
       today = today.subtract(1, 'day')
     }
+    loadDailyEvents()
   })
 
   //display today date in the header, using set interval to update seconds
@@ -55,17 +56,18 @@ $(function () {
   })
 
   //populate existing entries from local storage
-  if (plannerCache){
-    $.each(plannerCache, function(key, value){
-      $('#textarea-'+key).text(value)
-    })
+  function loadDailyEvents(){
+    if (plannerCache){
+      $.each(plannerCache, function(key, value){
+        $('#textarea-'+key).text(value)
+      })
+    }
   }
 
   //eventlisnter for save button value is stored/removed from the cache
   $('.fa-save').click(function(){
     //get number part of id=button-# 
     let eventid = $(this).attr("id").split('-')[1]
-    console.log(eventId)
     //remove entry if left blank other wise add it to the plannerCache
     $('#textarea-'+eventid).val() ? plannerCache[eventid] = $('#textarea-'+eventid).val().trim() : delete plannerCache[eventid]
     localStorage.setItem("plannerCache", JSON.stringify(plannerCache))
