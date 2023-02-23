@@ -1,5 +1,5 @@
 $(function () {
-  var plannerCache = {}
+  var eventEntry = {}
   const workHours = [9,10,11,12,13,14,15,16,17]
   var today = dayjs()
   const currentHour = today.format('H')
@@ -8,9 +8,8 @@ $(function () {
   var bgcolor
   
   //parse local storage if it exists
-  var plannerCache = JSON.parse(localStorage.getItem("plannerCache"))
-  if (!plannerCache){plannerCache = {}}
-
+  var plannerCollection = JSON.parse(localStorage.getItem("plannerCache"))
+  if (!plannerCollection){plannerCollection = {}}
 
   //event listner for changing the day
   $('.changeDay').click(function(){
@@ -58,8 +57,8 @@ $(function () {
 
   //populate existing entries from local storage
   function loadDailyEvents(){
-    if (plannerCache){
-      $.each(plannerCache, function(key, value){
+    if (plannerCollection){
+      $.each(plannerCollection, function(key, value){
         $('#textarea-'+key).text(value)
       })
     }
@@ -68,11 +67,16 @@ $(function () {
   //eventlisnter for save button value is stored/removed from the cache
   $('.fa-save').click(function(){
     //get number part of id=button-# 
-    let eventid = $(this).attr("id").split('-')[1]
-    //remove entry if left blank other wise add it to the plannerCache
-    console.log($('#textarea-'+eventid).val())
-    $('#textarea-'+eventid).val() ? plannerCache[eventid] = $('#textarea-'+eventid).val().trim() : delete plannerCache[eventid]
-    localStorage.setItem("test", "blahblah")
-    console.log(JSON.stringify(plannerCache))
+    var eventid = $(this).attr("id").split('-')[1]
+    var eventValue = $('#textarea-'+eventid).val().trim()
+    var plannerEntry = today.format('MMDDYYYY')
+    eventEntry[eventid]=eventValue
+    //remove entry from eventEntry if value is blank otherwise add it to eventEntry
+    eventValue ? eventEntry[eventid] = eventValue : delete eventEntry[eventid]
+    plannerCollection[plannerEntry] = eventEntry
+    //check to see if all event entries were cleared, and if they were remove date entry from plannerCollection
+    if(Object.keys(plannerCollection[plannerEntry]).length==0){delete plannerCollection[plannerEntry]} 
+    console.log(plannerCollection)
+    localStorage.setItem('plannerCache', JSON.stringify(plannerCollection))
   })
 });
