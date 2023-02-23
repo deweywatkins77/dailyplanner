@@ -48,7 +48,5 @@ $(function () {
     $('#textarea-'+eventid).val() ? plannerCache[eventid] = $('#textarea-'+eventid).val() : delete plannerCache[eventid]
     localStorage.setItem("plannerCache", JSON.stringify(plannerCache))
   })
-
-    // TODO: Add code to display the current date in the header of the page.
-  });
+});
   
