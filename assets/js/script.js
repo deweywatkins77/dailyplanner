@@ -10,9 +10,25 @@ $(function () {
   var plannerCache = JSON.parse(localStorage.getItem("plannerCache"))
   if (!plannerCache){plannerCache = {}}
 
+
+  //event listner for changing the day
+  $('.changeDay').click(function(){
+    let changeValue = $(this).data('changevalue')
+    if (changeValue == '1'){
+      today = today.add(1, 'day')
+    }else{
+      today = today.subtract(1, 'day')
+    }
+  })
+
   //display today date in the header, using set interval to update seconds
   timerInterval = setInterval(function() {
+    //only display time of day if current day is today
+    if (today.format('MDYYYY') == dayjs().format('MDYYYY')){
       $('#currentDay').text(dayjs().format('dddd, MMMM D, YYYY h:mm:ss A'))
+    }else{
+      $('#currentDay').text(today.format('dddd, MMMM D, YYYY'))
+    }
   }, 1000);
 
   //build planner time entries
@@ -49,6 +65,7 @@ $(function () {
   $('.fa-save').click(function(){
     //get number part of id=button-# 
     let eventid = $(this).attr("id").split('-')[1]
+    console.log(eventId)
     //remove entry if left blank other wise add it to the plannerCache
     $('#textarea-'+eventid).val() ? plannerCache[eventid] = $('#textarea-'+eventid).val().trim() : delete plannerCache[eventid]
     localStorage.setItem("plannerCache", JSON.stringify(plannerCache))
