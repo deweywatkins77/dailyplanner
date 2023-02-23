@@ -1,4 +1,5 @@
 $(function () {
+  var plannerCache = {}
   const workHours = [9,10,11,12,13,14,15,16,17]
   var today = dayjs()
   const currentHour = today.format('H')
@@ -69,7 +70,9 @@ $(function () {
     //get number part of id=button-# 
     let eventid = $(this).attr("id").split('-')[1]
     //remove entry if left blank other wise add it to the plannerCache
+    console.log($('#textarea-'+eventid).val())
     $('#textarea-'+eventid).val() ? plannerCache[eventid] = $('#textarea-'+eventid).val().trim() : delete plannerCache[eventid]
-    localStorage.setItem("plannerCache", JSON.stringify(plannerCache))
+    localStorage.setItem("test", "blahblah")
+    console.log(JSON.stringify(plannerCache))
   })
 });
