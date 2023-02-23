@@ -1,7 +1,6 @@
 $(function () {
   const workHours = [9,10,11,12,13,14,15,16,17]
-  const today = dayjs()
-  const currentDay = today.format('dddd, MMMM D, YYYY h:mm:ss A')
+  var today = dayjs()
   const currentHour = today.format('H')
   const mainContainer = $('.container-lg')
   var eventEl, hourEl, textEl, saveEl
@@ -13,7 +12,7 @@ $(function () {
 
   //display today date in the header, using set interval to update seconds
   timerInterval = setInterval(function() {
-    $('#currentDay').text(dayjs().format('dddd, MMMM D, YYYY h:mm:ss A'))
+      $('#currentDay').text(dayjs().format('dddd, MMMM D, YYYY h:mm:ss A'))
   }, 1000);
 
   //build planner time entries
@@ -49,8 +48,7 @@ $(function () {
   //eventlisnter for save button value is stored/removed from the cache
   $('.fa-save').click(function(){
     //get number part of id=button-# 
-    let eventid = $(this).attr("id")
-    eventid = eventid.slice(-(eventid.length-7))
+    let eventid = $(this).attr("id").split('-')[1]
     //remove entry if left blank other wise add it to the plannerCache
     $('#textarea-'+eventid).val() ? plannerCache[eventid] = $('#textarea-'+eventid).val().trim() : delete plannerCache[eventid]
     localStorage.setItem("plannerCache", JSON.stringify(plannerCache))
