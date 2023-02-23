@@ -23,7 +23,7 @@ $(function () {
     eventEl = $('<div></div>')      
     eventEl.attr({id:"hour-"+value, class:"row time-block "+bgcolor})
     hourEl = `<div class="col-2 col-md-1 hour text-center py-3 id=timeEntry-`+value+`">`+hourValue+`</div>`
-    textEl = `<textarea class="col-8 col-md-10 description" rows="3" id="textarea-`+value+`"> </textarea>`
+    textEl = `<textarea class="col-8 col-md-10 description" rows="3" id="textarea-`+value+`"></textarea>`
     saveEl = `<button class="btn saveBtn col-2 col-md-1" dataset=aria-label="save">
                 <i class="fas fa-save" aria-hidden="true" id="button-`+value+`"></i>
               </button>`
