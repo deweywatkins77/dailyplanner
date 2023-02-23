@@ -31,16 +31,15 @@ $(function () {
     eventEl.append(textEl)
     eventEl.append(saveEl)
     mainContainer.append(eventEl)
-  })  
+  })
+  //eventlisnter for save button value is stored/removed from the cache
   $('.fa-save').click(function(){
     //get number part of id=button-# 
     let eventid = $(this).attr("id")
     eventid = eventid.slice(-(eventid.length-7))
+    //remove entry if left blank other wise add it to the plannerCache
     $('#textarea-'+eventid).val() ? plannerCache[eventid] = $('#textarea-'+eventid).val() : delete plannerCache[eventid]
-    //remove entry if left blank
-    
-    console.log(plannerCache)
-
+    localStorage.setItem("plannerCache", JSON.stringify(plannerCache))
   })
 
 
