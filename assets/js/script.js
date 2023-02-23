@@ -1,6 +1,6 @@
 $(function () {
   const workHours = [9,10,11,12,13,14,15,16,17]
-  var today = dayjs()
+  const today = dayjs()
   const currentHour = today.format('H')
   const mainContainer = $('.container-lg')
   var eventEl, hourEl, textEl, saveEl
@@ -12,7 +12,7 @@ $(function () {
 
   //display today date in the header, using set interval to update seconds
   timerInterval = setInterval(function() {
-      $('#currentDay').text(dayjs().format('dddd, MMMM D, YYYY h:mm:ss A'))
+    $('#currentDay').text(today.format('dddd, MMMM D, YYYY h:mm:ss A'))
   }, 1000);
 
   //build planner time entries
