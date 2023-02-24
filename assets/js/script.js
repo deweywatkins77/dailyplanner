@@ -30,7 +30,7 @@ $(function () {
     }else{
       $('#currentDay').text(today.format('dddd, MMMM D, YYYY'))
     }
-  }, 1000);
+  }, 100);
 
   //build planner time entries
   $.each(workHours, function(index,value){
@@ -55,28 +55,36 @@ $(function () {
     mainContainer.append(eventEl)
   })
 
-  //populate existing entries from local storage
+  //clear entries from display and populate entries from local storage
   function loadDailyEvents(){
-    if (plannerCollection){
-      $.each(plannerCollection, function(key, value){
-        $('#textarea-'+key).text(value)
+    $.each(workHours, function(index,value){
+      $('#textarea-'+value).val('')
+    })
+    if (typeof plannerCollection[today.format('MMDDYYYY')]!='undefined'){
+      $.each(plannerCollection[today.format('MMDDYYYY')], function(key, value){
+        //set event entries for currentdate
+        eventEntry = {[key] : value}
+        $('#textarea-'+key).val(value)
       })
+    }else{
+      // clear eventEntry if there are no entries for this date
+      eventEntry = {}
     }
   }
 
-  //eventlisnter for save button value is stored/removed from the cache
+  //eventlistener for save button value is stored/removed from the cache
   $('.fa-save').click(function(){
-    //get number part of id=button-# 
     var eventid = $(this).attr("id").split('-')[1]
     var eventValue = $('#textarea-'+eventid).val().trim()
+    console.log(today.format('MMDDYYYY'))
     var plannerEntry = today.format('MMDDYYYY')
-    eventEntry[eventid]=eventValue
+
     //remove entry from eventEntry if value is blank otherwise add it to eventEntry
     eventValue ? eventEntry[eventid] = eventValue : delete eventEntry[eventid]
     plannerCollection[plannerEntry] = eventEntry
     //check to see if all event entries were cleared, and if they were remove date entry from plannerCollection
     if(Object.keys(plannerCollection[plannerEntry]).length==0){delete plannerCollection[plannerEntry]} 
-    console.log(plannerCollection)
     localStorage.setItem('plannerCache', JSON.stringify(plannerCollection))
   })
+  loadDailyEvents()
 });
