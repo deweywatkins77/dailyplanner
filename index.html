@@ -13,9 +13,9 @@
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script>
       $( function() {
-        $( "#currentDay" ).datepicker({
+        $( "#datepicker" ).datepicker({
           showOn: "button",
-          buttonImage: "images/calendar.gif",
+          buttonImage: "./assets/images/calendar.gif",
           buttonImageOnly: true,
           buttonText: "Select date"
         });
@@ -30,7 +30,8 @@
       <h1 class="display-3">Work Day Scheduler</h1>
       <p class="lead">A simple calendar app for scheduling your work day</p>
       <button class="changeDay" data-changevalue="-1" style="border: none; background-color: white;"><</button>
-      <p id="currentDay" class="lead" style="display:inline-block; width: 450px;"></p>
+      <p id="currentDay" class="lead" style="display:inline-block;"></p>
+      <input type="hidden" id="datepicker" style="margin-right: 20px;">
       <button class="changeDay" data-changevalue="1" style="border: none; background-color: white;">></button>
     </header>
     <div class="container-lg px-5"></div>

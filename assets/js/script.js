@@ -7,7 +7,7 @@ $(function () {
   const currentHour = today.format('H')
   const mainContainer = $('.container-lg')
 
-  
+
   //parse local storage if it exists
   var plannerCollection = JSON.parse(localStorage.getItem("plannerCache"))
   if (!plannerCollection){plannerCollection = {}}
@@ -20,6 +20,17 @@ $(function () {
     }else{
       today = today.subtract(1, 'day')
     }
+    //when date changes reload events for current day.
+    loadDailyEvents()
+  })
+
+  $('#datepicker').change(function(){
+    var datePickerValue = $(this).val()
+    var datePickerMonth = datePickerValue.slice(0,2)
+    var datePickerDate = datePickerValue.slice(3,5)
+    var datePickerYear = datePickerValue.slice(-4)
+    // for some reason the set method for month is 0 indexed, so we have to subtract 1
+    today = today.set('month', datePickerMonth-1).set('date', datePickerDate).set('year',datePickerYear)
     //when date changes reload events for current day.
     loadDailyEvents()
   })
@@ -49,7 +60,7 @@ $(function () {
       }else{
         bgcolor = "present"
       }
-      eventEl = $('<div></div>')      
+      eventEl = $('<div></div>')
       eventEl.attr({id:"hour-"+value, class:"row time-block "+bgcolor})
       hourEl = `<div class="col-2 col-md-1 hour text-center py-3 id=timeEntry-`+value+`">`+hourValue+`</div>`
       textEl = `<textarea class="col-8 col-md-10 description" rows="3" id="textarea-`+value+`"></textarea>`
@@ -67,18 +78,14 @@ $(function () {
 
   function saveInfo(){
     $('.fa-save').on('click', function(){
-      console.log('onclick')
       var eventid = $(this).attr("id").split('-')[1]
       var eventValue = $('#textarea-'+eventid).val().trim()
       var plannerEntry = today.format('MMDDYYYY')
-      console.log(eventid + "\t" + eventValue + "\t" + Object.keys(eventEntry))
       //remove entry from eventEntry if value is blank otherwise add it to eventEntry
       eventValue ? eventEntry[eventid] = eventValue : delete eventEntry[eventid]
-      console.log(eventid + "\t" + eventValue + "\t" + Object.keys(eventEntry))
       plannerCollection[plannerEntry] = eventEntry
-      console.log(eventid + "\t" + eventValue + "\t" + Object.keys(eventEntry))
       //check to see if all event entries were cleared, and if they were remove date entry from plannerCollection
-      if(Object.keys(plannerCollection[plannerEntry]).length==0){delete plannerCollection[plannerEntry]} 
+      if(Object.keys(plannerCollection[plannerEntry]).length==0){delete plannerCollection[plannerEntry]}
       localStorage.setItem('plannerCache', JSON.stringify(plannerCollection))
     })
   }
@@ -90,6 +97,7 @@ $(function () {
       $('#textarea-'+value).val('')
     })
     if (typeof plannerCollection[today.format('MMDDYYYY')]!='undefined'){
+      eventEntry = {}
       $.each(plannerCollection[today.format('MMDDYYYY')], function(key, value){
         //set event entries for currentdate
         eventEntry[key] = value
@@ -99,9 +107,6 @@ $(function () {
       // clear eventEntry if there are no entries for this date
       eventEntry = {}
     }
-    //update background colors
   }
-  //loadDailyEvents has to run before eventlistner because the element it listens for isnt build yet
   loadDailyEvents()
-
 });
