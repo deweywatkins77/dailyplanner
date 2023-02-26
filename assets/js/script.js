@@ -1,14 +1,12 @@
 $(function () {
   var eventEntry = {}
   var today = dayjs()
-  var eventEl, hourEl, textEl, saveEl
-  var bgcolor
+  var eventEl, hourEl, textEl, saveEl, bgcolor
   const workHours = [9,10,11,12,13,14,15,16,17]
   const currentHour = today.format('H')
   const mainContainer = $('.container-lg')
 
-
-  //parse local storage if it exists
+  //parse local storage for events if they exist
   var plannerCollection = JSON.parse(localStorage.getItem("plannerCache"))
   if (!plannerCollection){plannerCollection = {}}
 
@@ -64,7 +62,7 @@ $(function () {
       eventEl.attr({id:"hour-"+value, class:"row time-block "+bgcolor})
       hourEl = `<div class="col-2 col-md-1 hour text-center py-3 id=timeEntry-`+value+`">`+hourValue+`</div>`
       textEl = `<textarea class="col-8 col-md-10 description" rows="3" id="textarea-`+value+`"></textarea>`
-      saveEl = `<button class="btn saveBtn col-2 col-md-1" dataset=aria-label="save">
+      saveEl = `<button class="btn saveBtn col-2 col-md-1" dataset=aria-label="save" id="buttonarea-`+value+`">
                   <i class="fas fa-save" aria-hidden="true" id="button-`+value+`"></i>
                 </button>`
       eventEl.append(hourEl)
@@ -72,22 +70,49 @@ $(function () {
       eventEl.append(saveEl)
       mainContainer.append(eventEl)
     })
-    //generate new on click event listner for date change
-    saveInfo()
+    //generate new on click event listners for date change
+    saveButtonClick()
+    saveButtonAreaClick()
+    saveTextChange()
   }
 
-  function saveInfo(){
+  //on text change for event entry save automatically
+  function saveTextChange(){
+    $('.description').on('change', function(){
+      var eventid = $(this).attr("id").split('-')[1]
+      saveInfo(eventid)
+    })
+  }
+
+  //save button click event listner
+  function saveButtonClick(){
     $('.fa-save').on('click', function(){
       var eventid = $(this).attr("id").split('-')[1]
-      var eventValue = $('#textarea-'+eventid).val().trim()
-      var plannerEntry = today.format('MMDDYYYY')
-      //remove entry from eventEntry if value is blank otherwise add it to eventEntry
-      eventValue ? eventEntry[eventid] = eventValue : delete eventEntry[eventid]
-      plannerCollection[plannerEntry] = eventEntry
-      //check to see if all event entries were cleared, and if they were remove date entry from plannerCollection
-      if(Object.keys(plannerCollection[plannerEntry]).length==0){delete plannerCollection[plannerEntry]}
-      localStorage.setItem('plannerCache', JSON.stringify(plannerCollection))
+      saveInfo(eventid)
     })
+  }
+
+  /*
+    due to the save button being so small also allow the
+    blue area around the save button to save info as well
+  */
+  function saveButtonAreaClick(){
+    $('.saveBtn').on('click', function(){
+      var eventid = $(this).attr("id").split('-')[1]
+      saveInfo(eventid)
+    })
+  }
+
+  //save info to local cache
+  function saveInfo(eventid){
+    var eventValue = $('#textarea-'+eventid).val().trim()
+    var plannerEntry = today.format('MMDDYYYY')
+    //remove entry from eventEntry if value is blank otherwise add it to eventEntry
+    eventValue ? eventEntry[eventid] = eventValue : delete eventEntry[eventid]
+    plannerCollection[plannerEntry] = eventEntry
+    //check to see if all event entries were cleared, and if they were remove date entry from plannerCollection
+    if(Object.keys(plannerCollection[plannerEntry]).length==0){delete plannerCollection[plannerEntry]}
+    localStorage.setItem('plannerCache', JSON.stringify(plannerCollection))
   }
 
   //clear entries from display and populate entries from local storage
