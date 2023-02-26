@@ -3,7 +3,6 @@ $(function () {
   var today = dayjs()
   var eventEl, hourEl, textEl, saveEl, bgcolor
   const workHours = [9,10,11,12,13,14,15,16,17]
-  const currentHour = today.format('H')
   const mainContainer = $('.container-lg')
 
   //parse local storage for events if they exist
@@ -46,16 +45,15 @@ $(function () {
   //build planner time entries
   function loadPlanner(){
     //clear old data from mainContainer if exists
-    if (mainContainer.length){mainContainer.empty()}
+    mainContainer.empty()
     $.each(workHours, function(index,value){
       var hourValue = dayjs().hour(value).format('hA')
       var unixTime = dayjs().unix()
       var hourDiff = dayjs(unixTime).diff(today.hour(value).unix())
+      bgcolor = "future"
       if ( hourDiff >= 3600){
         bgcolor = "past"
-      }else if ( hourDiff < 0){
-        bgcolor = "future"
-      }else{
+      }else if (hourDiff >= 0){
         bgcolor = "present"
       }
       eventEl = $('<div></div>')
@@ -65,39 +63,25 @@ $(function () {
       saveEl = `<button class="btn saveBtn col-2 col-md-1" dataset=aria-label="save" id="buttonarea-`+value+`">
                   <i class="fas fa-save" aria-hidden="true" id="button-`+value+`"></i>
                 </button>`
-      eventEl.append(hourEl)
-      eventEl.append(textEl)
-      eventEl.append(saveEl)
+      eventEl.append(hourEl, textEl, saveEl)
       mainContainer.append(eventEl)
     })
     //generate new on click event listners for date change
     saveButtonClick()
-    saveButtonAreaClick()
     saveTextChange()
+  }
+
+  //save button click event listner
+  function saveButtonClick(){
+    $('.fa-save', '.saveBtn').on('click', function(){
+      var eventid = $(this).attr("id").split('-')[1]
+      saveInfo(eventid)
+    })
   }
 
   //on text change for event entry save automatically
   function saveTextChange(){
     $('.description').on('change', function(){
-      var eventid = $(this).attr("id").split('-')[1]
-      saveInfo(eventid)
-    })
-  }
-
-  //save button click event listner
-  function saveButtonClick(){
-    $('.fa-save').on('click', function(){
-      var eventid = $(this).attr("id").split('-')[1]
-      saveInfo(eventid)
-    })
-  }
-
-  /*
-    due to the save button being so small also allow the
-    blue area around the save button to save info as well
-  */
-  function saveButtonAreaClick(){
-    $('.saveBtn').on('click', function(){
       var eventid = $(this).attr("id").split('-')[1]
       saveInfo(eventid)
     })
@@ -133,5 +117,6 @@ $(function () {
       eventEntry = {}
     }
   }
+
   loadDailyEvents()
 });
