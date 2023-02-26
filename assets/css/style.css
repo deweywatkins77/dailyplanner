@@ -5,7 +5,7 @@ body {
   }
 
 header {
-  background-color: #21a2b3;
+  background-color: #06aed5;
 }
   
 textarea {
@@ -65,7 +65,7 @@ textarea {
 
 .changeDay {
   border: none; 
-  background-color: #21a2b3;
+  background-color: #06aed5;
 }
 
 .container-lg {
