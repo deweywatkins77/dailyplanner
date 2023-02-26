@@ -1,7 +1,7 @@
 # Daily Planner
 
 ## Description
-Create a website that displays a planner for today and is able to sve events.
+Create a website that displays a planner for today and is able to save events.
 
 
 ## Installation
