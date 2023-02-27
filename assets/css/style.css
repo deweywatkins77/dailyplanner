@@ -1,9 +1,9 @@
 body {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 16px;
-    background-color: lightgrey;
-    padding-bottom: 10px;
-  }
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  background-color: lightgrey;
+  padding-bottom: 10px;
+}
 
 header {
   display: flex;
@@ -68,10 +68,6 @@ textarea {
   background-color: #06aed5;
 }
 
-.container-lg {
-  background-color: lightgrey;
-}
-
 #currentDay {
   display:inline-block;
 }
@@ -92,4 +88,8 @@ textarea {
 
 img[src='./assets/images/calendar.gif']{
   padding-bottom: 5px;
+}
+
+.container-lg {
+  background-color: lightgrey;
 }
