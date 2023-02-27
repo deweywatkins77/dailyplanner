@@ -3,7 +3,6 @@ $(function () {
   var today = dayjs()
   var eventEl, hourEl, textEl, saveEl, bgcolor
   const workHours = [9,10,11,12,13,14,15,16,17]
-  const currentHour = today.format('H')
   const mainContainer = $('.container-lg')
 
   //parse local storage for events if they exist

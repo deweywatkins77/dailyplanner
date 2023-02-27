@@ -5,6 +5,11 @@ body {
   }
 
 header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
   background-color: #06aed5;
 }
   
@@ -74,4 +79,22 @@ textarea {
 
 #currentDay {
   display:inline-block;
+}
+
+.changeDay[data-changevalue="-1"] {
+  float:left;
+  padding-top: 3px;
+}
+
+.changeDay[data-changevalue="1"] {
+  float: right;
+  padding-top: 3px;
+}
+
+.datecontainer{
+  width: 478px;
+}
+
+img[src='./assets/images/calendar.gif']{
+  padding-bottom: 5px;
 }
