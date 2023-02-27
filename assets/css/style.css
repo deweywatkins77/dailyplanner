@@ -13,6 +13,33 @@ header {
   height: 200px;
   background-color: #06aed5;
 }
+
+.changeDay {
+  border: none; 
+  background-color: #06aed5;
+}
+
+#currentDay {
+  display:inline-block;
+}
+
+.changeDay[data-changevalue="-1"] {
+  float:left;
+  padding-top: 3px;
+}
+
+.changeDay[data-changevalue="1"] {
+  float: right;
+  padding-top: 3px;
+}
+
+.datecontainer{
+  width: 478px;
+}
+
+img[src='./assets/images/calendar.gif']{
+  padding-bottom: 5px;
+}
   
 textarea {
   background-color: transparent;
@@ -61,33 +88,6 @@ textarea {
 .saveBtn i:hover {
   font-size: 20px;
   transition: all 0.3s ease-in-out;
-}
-
-.changeDay {
-  border: none; 
-  background-color: #06aed5;
-}
-
-#currentDay {
-  display:inline-block;
-}
-
-.changeDay[data-changevalue="-1"] {
-  float:left;
-  padding-top: 3px;
-}
-
-.changeDay[data-changevalue="1"] {
-  float: right;
-  padding-top: 3px;
-}
-
-.datecontainer{
-  width: 478px;
-}
-
-img[src='./assets/images/calendar.gif']{
-  padding-bottom: 5px;
 }
 
 .container-lg {
